@@ -13,5 +13,24 @@
         <module>antlr4-development-example</module>
     </modules>
 
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <target.jvm>1.8</target.jvm>
+        <antlr.version>4.7.1</antlr.version>
+        <junit.version>4.12</junit.version>
+    </properties>
 
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.8.0</version>
+                <configuration>
+                    <source>${target.jvm}</source>
+                    <target>${target.jvm}</target>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 </project>
