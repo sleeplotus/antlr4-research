@@ -13,9 +13,7 @@ import java.util.List;
  * @company VRV
  */
 public class UppercaseMethodListener extends Java8BaseListener {
-    private List<String> errors = new ArrayList<>();
-
-    // ... getter for errors
+    public List<String> errors = new ArrayList<>();
 
     @Override
     public void enterMethodDeclarator(Java8Parser.MethodDeclaratorContext ctx) {
