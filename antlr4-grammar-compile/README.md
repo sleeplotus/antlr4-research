@@ -1,7 +1,7 @@
 # Reference
 [ANTLR Official Web Site](https://www.antlr.org/)  
 [ANTLR v4 Maven plugin](https://www.antlr.org/api/maven-plugin/latest/index.html)  
-[grammars-v4](https://github.com/sleeplotus/grammars-v4)
+[Grammars-V4](https://github.com/sleeplotus/grammars-v4)
 # ANTLR Shell Hello.g4 Example
 ##Prepare A Grammar File  
 * Hello.g4
