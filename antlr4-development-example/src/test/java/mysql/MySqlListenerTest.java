@@ -36,6 +36,26 @@ public class MySqlListenerTest {
     }
 
     @Test
+    public void ddlStatementTest() {
+        // First, we construct the lexer
+        // As SQL grammar are normally not case sensitive but this grammar implementation is, you must use a custom character stream that converts all characters to uppercase before sending them to the lexer.
+        String mySql = "drop table area".toUpperCase();
+        MySqlLexer mySqlLexer = new MySqlLexer(CharStreams.fromString(mySql));
+
+        // Then, we instantiate the parser
+        CommonTokenStream tokens = new CommonTokenStream(mySqlLexer);
+        MySqlParser parser = new MySqlParser(tokens);
+        ParseTree tree = parser.ddlStatement();
+
+        // And then, the walker and the listener
+        ParseTreeWalker walker = new ParseTreeWalker();
+        MySqlListener listener = new MySqlListener();
+
+        // Lastly, we tell ANTLR to walk through our sample class:
+        walker.walk(listener, tree);
+    }
+
+    @Test
     public void insertStatementTest() {
         // First, we construct the lexer
         // As SQL grammar are normally not case sensitive but this grammar implementation is, you must use a custom character stream that converts all characters to uppercase before sending them to the lexer.

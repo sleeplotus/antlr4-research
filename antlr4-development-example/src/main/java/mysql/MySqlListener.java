@@ -11,6 +11,13 @@ import mysql.antlr4.MySqlParserBaseListener;
 public class MySqlListener extends MySqlParserBaseListener {
 
     @Override
+    public void enterTableName(MySqlParser.TableNameContext ctx) {
+        System.out.println("*********************************");
+        System.out.println("ListenerName=EnterTableName");
+        System.out.println(ctx.getText());
+    }
+
+    @Override
     public void enterInsertStatement(MySqlParser.InsertStatementContext ctx) {
         System.out.println("*********************************");
         System.out.println("ListenerName=EnterInsertStatement");
@@ -91,6 +98,20 @@ public class MySqlListener extends MySqlParserBaseListener {
     public void enterDmlStatement(MySqlParser.DmlStatementContext ctx) {
         System.out.println("*********************************");
         System.out.println("ListenerName=EnterDmlStatement");
+        System.out.println(ctx.getText());
+    }
+
+    @Override
+    public void enterDdlStatement(MySqlParser.DdlStatementContext ctx) {
+        System.out.println("*********************************");
+        System.out.println("ListenerName=EnterDdlStatement");
+        System.out.println(ctx.getText());
+    }
+
+    @Override
+    public void enterDropTable(MySqlParser.DropTableContext ctx) {
+        System.out.println("*********************************");
+        System.out.println("ListenerName=EnterDropTable");
         System.out.println(ctx.getText());
     }
 
