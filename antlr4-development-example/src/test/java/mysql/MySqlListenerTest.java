@@ -19,7 +19,7 @@ public class MySqlListenerTest {
     public void dmlStatementTest() {
         // First, we construct the lexer
         // As SQL grammar are normally not case sensitive but this grammar implementation is, you must use a custom character stream that converts all characters to uppercase before sending them to the lexer.
-        String mySql = "select id,name,max(area_code) from area".toUpperCase();
+        String mySql = "select id,name,max(area_code) from area group by id,name".toUpperCase();
         MySqlLexer mySqlLexer = new MySqlLexer(CharStreams.fromString(mySql));
 
         // Then, we instantiate the parser

@@ -67,6 +67,13 @@ public class MySqlListener extends MySqlParserBaseListener {
     }
 
     @Override
+    public void enterGroupByItem(MySqlParser.GroupByItemContext ctx) {
+        System.out.println("*********************************");
+        System.out.println("ListenerName=EnterGroupByItem");
+        System.out.println(ctx.getText());
+    }
+
+    @Override
     public void enterSelectStarElement(MySqlParser.SelectStarElementContext ctx) {
         System.out.println("*********************************");
         System.out.println("ListenerName=EnterSelectStarElement");
