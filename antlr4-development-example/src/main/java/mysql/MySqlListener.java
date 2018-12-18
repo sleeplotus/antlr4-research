@@ -18,6 +18,13 @@ public class MySqlListener extends MySqlParserBaseListener {
     }
 
     @Override
+    public void enterFullColumnName(MySqlParser.FullColumnNameContext ctx) {
+        System.out.println("*********************************");
+        System.out.println("ListenerName=EnterFullColumnName");
+        System.out.println(ctx.getText());
+    }
+
+    @Override
     public void enterInsertStatement(MySqlParser.InsertStatementContext ctx) {
         System.out.println("*********************************");
         System.out.println("ListenerName=EnterInsertStatement");
