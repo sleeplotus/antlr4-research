@@ -21,13 +21,13 @@ import java.util.Map;
 public class DataLineageListenerTest {
 
     @Test
-    public void simpleQueryCreateTable() {
+    public void simpleQueryCreateTableTest() {
         String mySql = "create table c as select a.a1,a.a2 from a";
         ddlStatementTest(mySql);
     }
 
     @Test
-    public void joinQueryCreateTable() {
+    public void joinQueryCreateTableTest() {
         String mySql = "create table c as select a.a1,a.a2,b.b1,b.b2 from a join b where a.a1 = b.b1";
         ddlStatementTest(mySql);
     }
