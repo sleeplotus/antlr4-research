@@ -23,16 +23,16 @@ public class DataLineageListenerTest {
     @Test
     public void simpleQueryCreateTableTest() {
         String mySql = "create table c as select a.a1,a.a2 from a";
-        ddlStatementTest(mySql);
+        ddlStatementParser(mySql);
     }
 
     @Test
     public void joinQueryCreateTableTest() {
         String mySql = "create table c as select a.a1,a.a2,b.b1,b.b2 from a join b where a.a1 = b.b1";
-        ddlStatementTest(mySql);
+        ddlStatementParser(mySql);
     }
 
-    public void ddlStatementTest(String mySql) {
+    private void ddlStatementParser(String mySql) {
         // First, we construct the lexer
         // As SQL grammar are normally not case sensitive but this grammar implementation is, you must use a custom character stream that converts all characters to uppercase before sending them to the lexer.
         MySqlLexer mySqlLexer = new MySqlLexer(CharStreams.fromString(mySql.toUpperCase()));
@@ -53,7 +53,7 @@ public class DataLineageListenerTest {
         parseDataLineage(listener);
     }
 
-    public void parseDataLineage(DataLineageListener listener) {
+    private void parseDataLineage(DataLineageListener listener) {
         if (listener.queryCreateTable) {
             System.out.println("*********************************");
             System.out.println("TableName=" + listener.tableName);
@@ -69,15 +69,15 @@ public class DataLineageListenerTest {
             tableLineage.put(dstTable, listener.tableName);
             System.out.println("TableLineage=" + tableLineage);
 
-            String[] columnArray = null;
-            List<String> columns = null;
+            String[] columnArray;
+            List<String> columns;
             for (String columnName : listener.columnName) {
                 columnArray = columnName.split("\\.");
-                if (columnArray != null && columnArray.length == 2) {
+                if (columnArray.length == 2) {
                     if (columnLineage.containsKey(columnArray[0])) {
                         columnLineage.get(columnArray[0]).add(columnArray[1]);
                     } else {
-                        columns = new ArrayList<String>();
+                        columns = new ArrayList<>();
                         columns.add(columnArray[1]);
                         columnLineage.put(columnArray[0], columns);
                     }
