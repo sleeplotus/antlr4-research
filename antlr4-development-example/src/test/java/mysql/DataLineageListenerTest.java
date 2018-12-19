@@ -21,11 +21,21 @@ import java.util.Map;
 public class DataLineageListenerTest {
 
     @Test
-    public void ddlStatementTest() {
+    public void simpleQueryCreateTable() {
+        String mySql = "create table c as select a.a1,a.a2 from a";
+        ddlStatementTest(mySql);
+    }
+
+    @Test
+    public void joinQueryCreateTable() {
+        String mySql = "create table c as select a.a1,a.a2,b.b1,b.b2 from a join b where a.a1 = b.b1";
+        ddlStatementTest(mySql);
+    }
+
+    public void ddlStatementTest(String mySql) {
         // First, we construct the lexer
         // As SQL grammar are normally not case sensitive but this grammar implementation is, you must use a custom character stream that converts all characters to uppercase before sending them to the lexer.
-        String mySql = "create table c as select a.a1,a.a2,b.b1,b.b2 from a join b where a.a1 = b.b1".toUpperCase();
-        MySqlLexer mySqlLexer = new MySqlLexer(CharStreams.fromString(mySql));
+        MySqlLexer mySqlLexer = new MySqlLexer(CharStreams.fromString(mySql.toUpperCase()));
 
         // Then, we instantiate the parser
         CommonTokenStream tokens = new CommonTokenStream(mySqlLexer);
@@ -40,33 +50,42 @@ public class DataLineageListenerTest {
         walker.walk(listener, tree);
 
         // Print result
-        System.out.println("*********************************");
-        System.out.println(listener.tableName);
-        System.out.println(listener.columnName);
-
-        // Lineage
-        System.out.println("*********************************");
-        Map<String, List<String>> tableLineage = new HashMap<>();
-        Map<String, List<String>> columnLineage = new HashMap<>();
-
-        String dstTable = listener.tableName.get(0);
-        listener.tableName.remove(0);
-        tableLineage.put(dstTable, listener.tableName);
-        System.out.println(tableLineage);
-
-        String[] columnArray = null;
-        List<String> columns = null;
-        for (String columnName : listener.columnName) {
-            columnArray = columnName.split("\\.");
-            if (columnLineage.containsKey(columnArray[0])) {
-                columnLineage.get(columnArray[0]).add(columnArray[1]);
-            } else {
-                columns = new ArrayList<String>();
-                columns.add(columnArray[1]);
-                columnLineage.put(columnArray[0], columns);
-            }
-
-        }
-        System.out.println(columnLineage);
+        parseDataLineage(listener);
     }
+
+    public void parseDataLineage(DataLineageListener listener) {
+        if (listener.queryCreateTable) {
+            System.out.println("*********************************");
+            System.out.println("TableName=" + listener.tableName);
+            System.out.println("ColumnName=" + listener.columnName);
+
+            // Lineage
+            System.out.println("*********************************");
+            Map<String, List<String>> tableLineage = new HashMap<>();
+            Map<String, List<String>> columnLineage = new HashMap<>();
+
+            String dstTable = listener.tableName.get(0);
+            listener.tableName.remove(0);
+            tableLineage.put(dstTable, listener.tableName);
+            System.out.println("TableLineage=" + tableLineage);
+
+            String[] columnArray = null;
+            List<String> columns = null;
+            for (String columnName : listener.columnName) {
+                columnArray = columnName.split("\\.");
+                if (columnArray != null && columnArray.length == 2) {
+                    if (columnLineage.containsKey(columnArray[0])) {
+                        columnLineage.get(columnArray[0]).add(columnArray[1]);
+                    } else {
+                        columns = new ArrayList<String>();
+                        columns.add(columnArray[1]);
+                        columnLineage.put(columnArray[0], columns);
+                    }
+                }
+            }
+            System.out.println("ColumnLineage=" + columnLineage);
+        }
+    }
+
+
 }

@@ -15,6 +15,7 @@ public class DataLineageListener extends MySqlParserBaseListener {
 
     List<String> tableName = new ArrayList<>();
     List<String> columnName = new ArrayList<>();
+    boolean queryCreateTable = false;
 
     @Override
     public void enterTableName(MySqlParser.TableNameContext ctx) {
@@ -36,6 +37,7 @@ public class DataLineageListener extends MySqlParserBaseListener {
         System.out.println("*********************************");
         System.out.println("ListenerName=EnterQueryCreateTable");
         System.out.println(ctx.getText());
+        queryCreateTable = true;
     }
 
     @Override
